@@ -16,3 +16,9 @@
 # Compile file
 \of
 ```
+
+## Run
+
+```sh
+$ sbcl --script 1-a.lisp
+```

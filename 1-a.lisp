@@ -19,4 +19,4 @@
                             (setf last-num n))))
     increase-count))
 
-(solve "1a.txt")
+(print (solve "1a.txt"))
