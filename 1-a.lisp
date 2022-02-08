@@ -2,11 +2,12 @@
 
 (defpackage #:1a
   (:use #:cl)
-  (:export #:generate))
+  (:export #:solve))
 
 (in-package #:1a)
 
 (defun solve (filename)
+  "Count the times the numbers (one on each line) in the file <filename> increased"
   (let ((last-num nil)
         (increase-count 0))
     (with-open-file (in filename)
