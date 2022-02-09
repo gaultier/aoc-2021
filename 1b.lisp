@@ -17,8 +17,8 @@
   "Count the times the numbers (one on each line) in the file <filename> increased"
   (loop with lines = (read-file-as-lines filename)
         with numbers = (map 'list #'parse-integer lines)
-          for (a b) on numbers while b
-        counting (> b a) into increase-count
+        for (a b c d) on numbers while (and b c d)
+        counting (< (+ a b c) (+ b c d)) into increase-count
         finally (return increase-count)))
 
 (print (solve "1.txt"))
