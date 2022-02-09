@@ -6,21 +6,19 @@
 
 (in-package #:1a)
 
+(defun read-file-as-lines (filename)
+  "Read file into a list of lines."
+  (with-open-file (in filename)
+    (loop for line = (read-line in nil nil)
+      while line
+      collect line)))
+
 (defun solve (filename)
   "Count the times the numbers (one on each line) in the file <filename> increased"
-  (let ((last-num nil)
-        (increase-count 0))
-    (with-open-file (in filename)
-      (loop for line = (read-line in nil)
-            while line do (let ((n (parse-integer line)))
-                            (if last-num 
-                                (incf increase-count (count-increase n last-num)))
-                            (setf last-num n))))
-    increase-count))
-
-(defun count-increase (n acc)
-  (if (> n acc)
-      1
-      0))
+  (loop with lines = (read-file-as-lines filename)
+        with numbers = (map 'list #'parse-integer lines)
+        for (a b) on numbers while b
+        counting (> b a) into increase-count
+        finally (return increase-count)))
 
 (print (solve "1a.txt"))
