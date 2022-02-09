@@ -11,7 +11,7 @@
   (let ((last-num nil)
         (increase-count 0))
     (with-open-file (in filename)
-        (loop for line = (read-line in nil)
+      (loop for line = (read-line in nil)
             while line do (let ((n (parse-integer line)))
                             (if last-num 
                                 (incf increase-count (count-increase n last-num)))
