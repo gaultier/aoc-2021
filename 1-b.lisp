@@ -1,11 +1,10 @@
-#!/usr/local/bin/sbcl --script
 (in-package #:cl-user)
 
-(defpackage #:1a
+(defpackage #:1b
   (:use #:cl)
   (:export #:solve))
 
-(in-package #:1a)
+(in-package #:1b)
 
 (defun read-file-as-lines (filename)
   "Read file into a list of lines."
