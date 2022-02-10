@@ -8,27 +8,31 @@
 (defun read-file-as-lines (filename)
   "Read file into a list of lines."
   (with-open-file (in filename)
-    (loop for line = (read-line in nil nil)
+    (loop 
+      for line = (read-line in nil nil)
       while line
       collect line)))
 
 (defun 1a (filename)
   "Count the times the numbers (one on each line) in the file <filename> increased"
-  (loop with lines = (read-file-as-lines filename)
-        with numbers = (map 'list #'parse-integer lines)
-          for (a b) on numbers while b
-        counting (> b a) into increase-count
-        finally (return increase-count)))
+  (loop 
+    with lines = (read-file-as-lines filename)
+    with numbers = (map 'list #'parse-integer lines)
+    for (a b) on numbers while b
+    counting (> b a) into increase-count
+    finally (return increase-count)))
 
 (print (1a "1.txt"))
 
+
 (defun 1b (filename)
   "Count the times the 3-numbers window in the file <filename> increased"
-  (loop with lines = (read-file-as-lines filename)
-        with numbers = (map 'list #'parse-integer lines)
-        for (a b c d) on numbers while (and b c d)
-        counting (< (+ a b c) (+ b c d)) into increase-count
-        finally (return increase-count)))
+  (loop 
+    with lines = (read-file-as-lines filename)
+    with numbers = (map 'list #'parse-integer lines)
+    for (a b c d) on numbers while (and b c d)
+    counting (< (+ a b c) (+ b c d)) into increase-count
+    finally (return increase-count)))
 
 (print (1b "1.txt"))
 
