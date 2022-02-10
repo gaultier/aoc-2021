@@ -20,5 +20,5 @@
 ## Run
 
 ```sh
-$ sbcl --script 1-a.lisp
+$ sbcl --script main.lisp
 ```
