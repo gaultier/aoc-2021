@@ -34,18 +34,18 @@
 
 
 (defun 2a (filename)
-  "Interpret move instructions for submarine")
+  "Interpret move instructions for submarine"
+  (loop 
+    with instructions = (read-file-as-lines filename)
+    with words = (map 'list #'sb-unicode:words instructions)
+    for (instr _ num-str) in words
+    if (equal instr "forward") 
+      summing (parse-integer num-str) into forward
+    if (equal instr "down")
+      summing (parse-integer num-str) into down
+    if (equal instr "up")
+      summing (parse-integer num-str) into up
+     finally (return (* forward (- down up)))))
   
-
-(loop with instructions = (list "forward 5" "down 2" "up 3")
-      with words = (map 'list #'sb-unicode:words instructions)
-      and res = #c(0 0)
-      for (instr _ num-str) in words
-      do (let ((num (real (parse-integer num-str))))
-           (print num)
-           (cond ((equal instr "forward") (incf res #c(num 0)))
-                 ((equal instr "down") (incf res #c(0 num)))
-                 ((equal instr "up") (incf res #c(0 -num)))
-                 (t (error "invalid instruction"))))
-      finally (return res))
+(print (2a "2.txt"))
 
