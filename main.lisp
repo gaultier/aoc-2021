@@ -41,15 +41,11 @@
       with words = (map 'list #'sb-unicode:words instructions)
       and res = #c(0 0)
       for (instr _ num-str) in words
-      do (let ((num (parse-integer num-str)))
+      do (let ((num (real (parse-integer num-str))))
+           (print num)
            (cond ((equal instr "forward") (incf res #c(num 0)))
                  ((equal instr "down") (incf res #c(0 num)))
                  ((equal instr "up") (incf res #c(0 -num)))
                  (t (error "invalid instruction"))))
       finally (return res))
-
-(let ((c #c(0 0)))
-  (incf c #c(1 1))
-  (format t "~Ai ~A" (imagpart c) (realpart c)))
-
 
