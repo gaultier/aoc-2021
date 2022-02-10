@@ -62,14 +62,17 @@
     and x = 0
     and y = 0
     for (instr _ num-str) in words
-    do 
-      (let ((num (parse-integer num-str)))
-        (cond ((string= instr "forward") (do 
-                                          (incf x num)
-                                          (incf y (* x aim))))
-              ((string= instr "up") (decf aim num))
-              ((string= instr "down") (incf aim num))
-              (t (error "unknown instruction"))))
+    for num = (parse-integer num-str)
+    if (string= instr "forward")
+      do 
+        (incf x num)
+        (incf y (* x aim))
+    if (string= instr "up")
+      do (decf aim num)
+    if (string= instr "down")
+      do (incf aim num)
     finally (return (* x y))))
   
 (print (2b "2-sample.txt"))
+
+
