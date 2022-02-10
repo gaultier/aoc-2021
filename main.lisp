@@ -53,3 +53,23 @@
   
 (print (2a "2.txt"))
 
+(defun 2b (filename)
+  "Interpret move instructions for submarine"
+  (loop 
+    with instructions = (read-file-as-lines filename)
+    with words = (map 'list #'sb-unicode:words instructions)
+    and aim = 0
+    and x = 0
+    and y = 0
+    for (instr _ num-str) in words
+    do 
+      (let ((num (parse-integer num-str)))
+        (cond ((string= instr "forward") (do 
+                                          (incf x num)
+                                          (incf y (* x aim))))
+              ((string= instr "up") (decf aim num))
+              ((string= instr "down") (incf aim num))
+              (t (error "unknown instruction"))))
+    finally (return (* x y))))
+  
+(print (2b "2-sample.txt"))
