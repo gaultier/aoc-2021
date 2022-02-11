@@ -75,3 +75,26 @@
     finally (return (* x y))))
   
 (print (2b "2.txt"))
+
+
+(defun 3a (filename)
+  (loop
+    with lines = (read-file-as-lines filename)
+    and gamma = (make-bit-array 64 :element-type 'bit :initial-element 0)
+    and epsilon = (make-bit-array 64 :element-type 'bit :initial-element 0)
+    for line in lines
+    for (ones zeroes) = (string-popcount line)
+    count into i
+    do
+      (setf (aref gamma i)))) 
+      
+    
+
+
+(defun string-popcount (s)
+  (loop 
+    for c across s 
+    count (char= c #\1) into ones
+    count (char= c #\0) into zeroes
+    finally (return (values ones zeroes))))
+(string-popcount "101")
