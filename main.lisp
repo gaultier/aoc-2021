@@ -76,6 +76,12 @@
   
 (print (2b "2.txt"))
 
+(defun string-popcount (s)
+  (loop 
+    for c across s 
+    count (char= c #\1) into ones
+    count (char= c #\0) into zeroes
+    finally (return (values ones zeroes))))
 
 (defun 3a (filename)
   (loop
@@ -87,15 +93,9 @@
     for (ones zeroes) = (string-popcount line)
     do
       (setf i (* i 2))
-      (setf gamma (bit-and gamma 42))))
-      
-    
+      (if (> ones zeroes) 
+        (setf gamma (logand gamma i))
+        (setf epsilon (logand epsilon i)))
+    finally (return (* gamma epsilon))))
 
-
-(defun string-popcount (s)
-  (loop 
-    for c across s 
-    count (char= c #\1) into ones
-    count (char= c #\0) into zeroes
-    finally (return (values ones zeroes))))
-(string-popcount "101")
+(3a "3-sample.txt")
