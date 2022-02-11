@@ -42,13 +42,14 @@
   (loop 
     with instructions = (read-file-as-lines filename)
     with words = (map 'list #'sb-unicode:words instructions)
-    for (instr _ num-str) in words
+    for (instr nil num-str) in words
+    for num = (parse-integer num-str)
     if (equal instr "forward") 
-      summing (parse-integer num-str) into forward
+      summing num into forward
     if (equal instr "down")
-      summing (parse-integer num-str) into down
+      summing num into down
     if (equal instr "up")
-      summing (parse-integer num-str) into up
+      summing num into up
      finally (return (* forward (- down up)))))
   
 (print (2a "2.txt"))
