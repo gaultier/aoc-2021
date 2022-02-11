@@ -80,13 +80,14 @@
 (defun 3a (filename)
   (loop
     with lines = (read-file-as-lines filename)
-    and gamma = (make-bit-array 64 :element-type 'bit :initial-element 0)
-    and epsilon = (make-bit-array 64 :element-type 'bit :initial-element 0)
+    and gamma = 0
+    and epsilon = 0
+    and i = 0
     for line in lines
     for (ones zeroes) = (string-popcount line)
-    count into i
     do
-      (setf (aref gamma i)))) 
+      (setf i (* i 2))
+      (setf gamma (bit-and gamma 42))))
       
     
 
