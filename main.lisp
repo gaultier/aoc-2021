@@ -84,18 +84,21 @@
     finally (return (values ones zeroes))))
 
 (defun 3a (filename)
-  (loop
+  (loop 
     with lines = (read-file-as-lines filename)
-    and gamma = 0
-    and epsilon = 0
-    and i = 0
-    for line in lines
-    for (ones zeroes) = (string-popcount line)
+    with line-length = (length (first lines))
+    and gamma = (make-array line-length :element-type 'bit :initial-element 0)
+    and epsilon = (make-array line-length :element-type 'bit :initial-element 0)
+    for i from 0 below line-length
     do
-      (setf i (* i 2))
-      (if (> ones zeroes) 
-        (setf gamma (logand gamma i))
-        (setf epsilon (logand epsilon i)))
-    finally (return (* gamma epsilon))))
+      (loop 
+        for line in lines
+        count (char= (aref line i) #\1) into ones
+        count (char= (aref line i) #\0) into zeroes
+        finally 
+          (if (> ones zeroes)
+              (setf (aref gamma i) 1)
+              (setf (aref epsilon i) 1)))))
+    ; finally (return (* gamma epsilon))))
 
 (3a "3-sample.txt")
