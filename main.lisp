@@ -61,18 +61,16 @@
     and aim = 0
     and x = 0
     and y = 0
-    for (instr _ num-str) in words
+    for (instr nil num-str) in words
     for num = (parse-integer num-str)
     if (string= instr "forward")
       do 
         (incf x num)
-        (incf y (* x aim))
+        (incf y (* num aim))
     if (string= instr "up")
       do (decf aim num)
     if (string= instr "down")
       do (incf aim num)
     finally (return (* x y))))
   
-(print (2b "2-sample.txt"))
-
-
+(print (2b "2.txt"))
