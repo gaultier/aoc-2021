@@ -110,3 +110,35 @@
               (return (* gamma-num epsilon-num)))))
 
 (print (3a "3.txt"))
+
+
+(defun 3b (filename)
+  (loop 
+    with lines = (read-file-as-lines filename)
+    with line-length = (length (first lines))
+    and nums = '()
+    until (= 1 (length nums))
+    do
+      (loop
+        for i from 0 below line-length
+        do 
+          (loop
+            for line in lines
+            count (char= (aref line i) #\1) into ones
+            count (char= (aref line i) #\0) into zeroes
+            if (char= (aref line i) #\1)
+              collect line into lines-one
+            if (char= (aref line i) #\0)
+              collect line into lines-zero
+            finally
+              (if (>= ones zeroes)
+                (do 
+                  (setq nums (set-difference nums lines-zero))
+                  (setq nums (union nums lines-one))
+                  (format t "nums=~A~%" nums))
+                (do 
+                  (setq nums (set-difference nums lines-one))
+                  (setq nums (union nums lines-zero))
+                  (format t "nums=~A~%" nums)))))))
+
+(3b "3-sample.txt")
