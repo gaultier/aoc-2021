@@ -102,3 +102,31 @@
     ; finally (return (* gamma epsilon))))
 
 (3a "3-sample.txt")
+
+(defun bit-vector-to-integer (bits endianess)
+  ""
+  (loop
+    for b across (if (equal endianess 'big-endian) bits (reverse bits))
+    for i from 0 below (length bits)
+    sum (ash b i)))
+
+(let ((v (make-array 16 :element-type 'bit :fill-pointer 0)))
+  (print (vector-push #b1 v))
+  (print (vector-push #b0 v))
+  (print (vector-push #b1 v))
+  (print (vector-push #b1 v))
+  (write v)
+  (bit-vector-to-integer v))
+
+(bit-vector-to-integer (reverse #*1011))
+(let ((v (vector #b1 #b0)))
+  (vector-push #b1 v)
+  v)
+
+(let ((v (vector 1 2 3)))
+  (vector-push 4 v)
+  v)
+
+(let ((v (make-sequence '(vector bit) 0)))
+  (vector-push #b1 v)
+  v)
