@@ -83,50 +83,30 @@
     count (char= c #\0) into zeroes
     finally (return (values ones zeroes))))
 
+(defun bit-vector-to-integer-little-endian (bits)
+  ""
+  (loop
+    for b across (reverse bits)
+    for i from 0 below (length bits)
+    sum (ash b i)))
+
 (defun 3a (filename)
   (loop 
     with lines = (read-file-as-lines filename)
     with line-length = (length (first lines))
-    and gamma = (make-array line-length :element-type 'bit :initial-element 0)
-    and epsilon = (make-array line-length :element-type 'bit :initial-element 0)
+    with gamma = (make-array line-length :element-type 'bit :initial-element 0 :fill-pointer 0)
+    with epsilon = (make-array line-length :element-type 'bit :initial-element 0 :fill-pointer 0)
     for i from 0 below line-length
     do
       (loop 
         for line in lines
         count (char= (aref line i) #\1) into ones
         count (char= (aref line i) #\0) into zeroes
-        finally 
-          (if (> ones zeroes)
-              (setf (aref gamma i) 1)
-              (setf (aref epsilon i) 1)))))
-    ; finally (return (* gamma epsilon))))
+        finally
+          (vector-push (if (> ones zeroes) 1 0) gamma)
+          (vector-push (if (> ones zeroes) 0 1) epsilon))
+    finally (let ((gamma-num (bit-vector-to-integer-little-endian gamma))
+                  (epsilon-num (bit-vector-to-integer-little-endian epsilon)))
+              (return (* gamma-num epsilon-num)))))
 
-(3a "3-sample.txt")
-
-(defun bit-vector-to-integer (bits endianess)
-  ""
-  (loop
-    for b across (if (equal endianess 'big-endian) bits (reverse bits))
-    for i from 0 below (length bits)
-    sum (ash b i)))
-
-(let ((v (make-array 16 :element-type 'bit :fill-pointer 0)))
-  (print (vector-push #b1 v))
-  (print (vector-push #b0 v))
-  (print (vector-push #b1 v))
-  (print (vector-push #b1 v))
-  (write v)
-  (bit-vector-to-integer v))
-
-(bit-vector-to-integer (reverse #*1011))
-(let ((v (vector #b1 #b0)))
-  (vector-push #b1 v)
-  v)
-
-(let ((v (vector 1 2 3)))
-  (vector-push 4 v)
-  v)
-
-(let ((v (make-sequence '(vector bit) 0)))
-  (vector-push #b1 v)
-  v)
+(print (3a "3.txt"))
