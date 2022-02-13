@@ -13,6 +13,7 @@
       while line
       collect line)))
 
+; 1a
 (defun 1a (filename)
   "Count the times the numbers (one on each line) in the file <filename> increased"
   (loop 
@@ -24,7 +25,7 @@
 
 (print (1a "1.txt"))
 
-
+; 1b
 (defun 1b (filename)
   "Count the times the 3-numbers window in the file <filename> increased"
   (loop 
@@ -36,7 +37,7 @@
 
 (print (1b "1.txt"))
 
-
+; 2a
 (defun 2a (filename)
   "Interpret move instructions for submarine"
   (loop 
@@ -54,6 +55,7 @@
 
 (print (2a "2.txt"))
 
+; 2b
 (defun 2b (filename)
   "Interpret move instructions for submarine"
   (loop 
@@ -76,13 +78,7 @@
 
 (print (2b "2.txt"))
 
-(defun string-popcount (s)
-  (loop 
-    for c across s 
-    count (char= c #\1) into ones
-    count (char= c #\0) into zeroes
-    finally (return (values ones zeroes))))
-
+; 3a
 (defun bit-vector-to-integer-little-endian (bits)
   ""
   (loop
@@ -111,6 +107,7 @@
 
 (print (3a "3.txt"))
 
+; 3b
 (defun string-to-bitarray (s)
   (loop
     with res = (make-array (length s) :element-type 'bit :initial-element 0 :fill-pointer 0)
@@ -160,3 +157,5 @@
     (* O2 CO2)))
 
 (3b "3.txt")
+
+; 4a
