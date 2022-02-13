@@ -111,34 +111,61 @@
 
 (print (3a "3.txt"))
 
+(defun string-to-bitarray (s)
+  (loop
+    with res = (make-array (length s) :element-type 'bit :initial-element 0 :fill-pointer 0)
+    for c across s
+    do 
+      (cond 
+        ((char= c #\0) (vector-push 0 res))
+        ((char= c #\1) (vector-push 1 res))
+        (t (error "invalid character encountered")))
+    finally (return res)))
 
-(defun 3b (filename)
+(defun read-lines-from-file-as-bitarray (filename)
+  (map 'list #'string-to-bitarray (read-file-as-lines filename)))
+
+(defun nums-with-majority-bit-in-position (nums pos)
   (loop 
-    with lines = (read-file-as-lines filename)
-    with line-length = (length (first lines))
-    and nums = '()
-    until (= 1 (length nums))
-    do
-      (loop
-        for i from 0 below line-length
-        do 
-          (loop
-            for line in lines
-            count (char= (aref line i) #\1) into ones
-            count (char= (aref line i) #\0) into zeroes
-            if (char= (aref line i) #\1)
-              collect line into lines-one
-            if (char= (aref line i) #\0)
-              collect line into lines-zero
-            finally
-              (if (>= ones zeroes)
-                (do 
-                  (setq nums (set-difference nums lines-zero))
-                  (setq nums (union nums lines-one))
-                  (format t "nums=~A~%" nums))
-                (do 
-                  (setq nums (set-difference nums lines-one))
-                  (setq nums (union nums lines-zero))
-                  (format t "nums=~A~%" nums)))))))
+    for n in nums
+    when (= (aref n pos) 0) collect n into nums-with-zero 
+    when (= (aref n pos) 1) collect n into nums-with-one
+    finally (return
+              (if (> (length nums-with-zero) (length nums-with-one))
+                nums-with-zero
+                nums-with-one))))
+                  
+    
+(nums-with-majority-bit-in-position 
+  (read-lines-from-file-as-bitarray "3-sample.txt"))
 
-(3b "3-sample.txt")
+; (defun 3b (filename)
+;   (loop 
+;     with lines = (read-lines-from-file-as-bitarray filename)
+;     with line-length = (length (first lines))
+;     and nums = '()
+;     until (= 1 (length nums))
+;     do
+;       (loop
+;         for i from 0 below line-length
+;         do 
+;           (loop
+;             for line in lines
+;             count (char= (aref line i) #\1) into ones
+;             count (char= (aref line i) #\0) into zeroes
+;             if (char= (aref line i) #\1)
+;               collect line into lines-one
+;             if (char= (aref line i) #\0)
+;               collect line into lines-zero
+;             finally
+;               (if (>= ones zeroes)
+;                 (do 
+;                   (setq nums (set-difference nums lines-zero))
+;                   (setq nums (union nums lines-one))
+;                   (format t "nums=~A~%" nums))
+;                 (do 
+;                   (setq nums (set-difference nums lines-one))
+;                   (setq nums (union nums lines-zero))
+;                   (format t "nums=~A~%" nums)))))))
+
+; (3b "3-sample.txt")
