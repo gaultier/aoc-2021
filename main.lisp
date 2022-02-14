@@ -160,17 +160,28 @@
 
 ; 4a
 
+(defun output-stream-to-string-if-not-empty (ss)
+  (let ((s (get-output-stream-string ss)))
+       (if (string= "" s)
+         nil
+         s)))
+  
+
 (defun string-split-part (ss needle)
   (loop 
     with acc = (make-string-output-stream)
+    and acc-empty = t
     for c = (read-char ss nil nil)
+    while c
     do 
-      (cond ((not c) (let ((s (get-output-stream-string acc)))
-                        (if (string= "" s)
-                          (return nil)
-                          (return s))))
-            ((char= c needle) (return (get-output-stream-string acc)))
-            (t (write-char c acc)))))
+      (if (char= c needle)
+          (if acc-empty
+            (return string-split-part ss needle) 
+            (return (make-string-output-stream acc)))
+          (progn 
+            (write-char c acc)
+            (setf acc-empty nil)))
+    finally (return (output-stream-to-string-if-not-empty acc))))
 
 (defun string-split (s needle)
   (loop
@@ -179,15 +190,30 @@
     while part
     collect part))
 
+(defun read-bingo-board (in)
+  (loop 
+    initially (read-line in nil nil) ; skip empty line
+    for line = (read-line in nil nil)
+    for num-strs = (string-split line #\Space)
+    until (or (not line) (string= line ""))
+    do (print num-strs)
+    append (map 'list #'parse-integer num-strs)))
+        
+
 (defun read-bingo-input (filename)
   "Read file into a list of lines."
   (with-open-file (in filename)
     (loop 
       with first-line = (read-line in nil nil)
       with draw-numbers = (map 'list #'parse-integer (string-split first-line #\,))
-      for line = (read-line in nil nil)
-      while line
-      collect line into lines
-      finally (return (values draw-numbers lines)))))
+      with board = (read-bingo-board in)
+      do (print board))))
+      ; for board = (read-bingo-board in)
+      ; while board
+      ; collect board into boards
+      ; finally (return (values draw-numbers boards)))))
 
 (read-bingo-input "4-sample.txt")
+(string-split-part (make-string-input-stream "13  9") #\Space)
+(string-split-part (make-string-input-stream " 9") #\Space)
+(string-split-part (make-string-input-stream "  9") #\Space)
