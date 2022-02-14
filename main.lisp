@@ -159,15 +159,6 @@
 (3b "3.txt")
 
 ; 4a
-; (defun read-bingo (filename)
-;   "Read file into a list of lines."
-;   (with-open-file (in filename)
-;     (loop 
-;       with first-line = (read-line in nil nil)
-;       with draw-numbers = (map parse-integer (remove-if (lambda (s) (string= " " s) (words first-line))))
-;       for line = (read-line in nil nil)
-;       while line
-;       collect line)))
 
 (defun string-split-part (ss needle)
   (loop 
@@ -181,15 +172,22 @@
             ((char= c needle) (return (get-output-stream-string acc)))
             (t (write-char c acc)))))
 
-(string-split-part (make-string-input-stream "") #\,)
-(string-split-part (make-string-input-stream "17") #\,)
-(string-split-part (make-string-input-stream "17,11") #\,)
-
 (defun string-split (s needle)
   (loop
     with ss = (make-string-input-stream s)
     for part = (string-split-part ss needle)
     while part
     collect part))
-    
-(string-split "7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1" #\,)
+
+(defun read-bingo-input (filename)
+  "Read file into a list of lines."
+  (with-open-file (in filename)
+    (loop 
+      with first-line = (read-line in nil nil)
+      with draw-numbers = (map 'list #'parse-integer (string-split first-line #\,))
+      for line = (read-line in nil nil)
+      while line
+      collect line into lines
+      finally (return (values draw-numbers lines)))))
+
+(read-bingo-input "4-sample.txt")
