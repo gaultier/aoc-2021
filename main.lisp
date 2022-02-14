@@ -159,42 +159,37 @@
 (3b "3.txt")
 
 ; 4a
-(defun read-bingo (filename)
-  "Read file into a list of lines."
-  (with-open-file (in filename)
-    (loop 
-      with first-line = (read-line in nil nil)
-      with draw-numbers = (map parse-integer (remove-if (lambda (s) (string= " " s) (words first-line))))
-      for line = (read-line in nil nil)
-      while line
-      collect line)))
+; (defun read-bingo (filename)
+;   "Read file into a list of lines."
+;   (with-open-file (in filename)
+;     (loop 
+;       with first-line = (read-line in nil nil)
+;       with draw-numbers = (map parse-integer (remove-if (lambda (s) (string= " " s) (words first-line))))
+;       for line = (read-line in nil nil)
+;       while line
+;       collect line)))
+
+(defun string-split-part (ss needle)
+  (loop 
+    with acc = (make-string-output-stream)
+    for c = (read-char ss nil nil)
+    do 
+      (cond ((not c) (let ((s (get-output-stream-string acc)))
+                        (if (string= "" s)
+                          (return nil)
+                          (return s))))
+            ((char= c needle) (return (get-output-stream-string acc)))
+            (t (write-char c acc)))))
+
+(string-split-part (make-string-input-stream "") #\,)
+(string-split-part (make-string-input-stream "17") #\,)
+(string-split-part (make-string-input-stream "17,11") #\,)
 
 (defun string-split (s needle)
   (loop
-    for c across s
-    with start = 0
-    if (char= c needle)
-      collect ()
-    collect (loop
-              for)))
+    with ss = (make-string-input-stream s)
+    for part = (string-split-part ss needle)
+    while part
+    collect part))
     
-(let ((ss (make-string-input-stream "7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1")))
-  (loop
-    with acc = (make-string-output-stream)
-    for c = (read-char ss nil nil)
-    if (not c)
-      collect (get-output-stream-string acc) and
-      return
-    else
-      if (char= c #\,)
-        collect (get-output-stream-string acc) and
-        do (setf acc (make-string-output-stream))
-      else
-        do (write-char c acc)))
- 
-(let ((ss (make-string-input-stream "7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1"))
-      (acc (make-string-output-stream)))       
-  (progn
-    (print (read-char ss nil nil))
-    (print (read-char ss nil nil))))
-
+(string-split "7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1" #\,)
