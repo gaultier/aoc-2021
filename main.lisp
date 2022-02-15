@@ -61,12 +61,12 @@
 (defun 2b (filename)
   "Interpret move instructions for submarine"
   (loop 
-    with instructions = (read-file-as-lines filename)
-    with words = (map 'list #'sb-unicode:words instructions)
+    with lines = (read-file-as-lines filename)
+    with instructions = (map 'list #'uiop:split-string lines)
     and aim = 0
     and x = 0
     and y = 0
-    for (instr nil num-str) in words
+    for (instr num-str) in instructions
     for num = (parse-integer num-str)
     if (string= instr "forward")
     do 
