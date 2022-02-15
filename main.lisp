@@ -174,7 +174,7 @@
       (loop
         for x from 0 below 5
         for n in nums
-        do (setf (aref board y x) n))
+        do (setf (aref board y x) '(n nil)))
     finally (when (> y 0) (return board))))
 
 (defun read-bingo-input (filename)
