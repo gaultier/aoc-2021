@@ -173,9 +173,12 @@
 (let ((arr (make-array '(5 5)))
       (row (map 'vector (lambda (x) (* x x)) '(1 2 3 4 5))))
   (loop
-    with first-row = (aref arr 0)
-    for i from 1 to 5
-    do (vector-push (* i i i) first-row)))
+    for y from 0 below 5
+    do 
+    (loop
+      for x from 0 below 5
+      do (setf (aref arr y x) (* x y)))
+    finally (return arr)))
 
 (defun read-bingo-board (in)
   (loop 
