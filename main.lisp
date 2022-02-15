@@ -174,7 +174,7 @@
       (loop
         for x from 0 below 5
         for n in nums
-        do (setf (aref board y x) '(n nil)))
+        do (setf (aref board y x) (list n nil)))
     finally (when (> y 0) (return board))))
 
 (defun read-bingo-input (filename)
@@ -188,4 +188,6 @@
       collect board into boards
       finally (return (values draw-numbers boards)))))
 
+(defun 4a (filename)
+  (multiple-value-bind ((draw-numbers boards))))
 (read-bingo-input "4-sample.txt")
