@@ -161,35 +161,21 @@
 (3b "3.txt")
 
 ; 4a
-
-(defun output-stream-to-string-if-not-empty (ss)
-  (let ((s (get-output-stream-string ss)))
-       (if (string= "" s)
-         nil
-         s)))
-  
-
-
-(let ((arr (make-array '(5 5)))
-      (row (map 'vector (lambda (x) (* x x)) '(1 2 3 4 5))))
-  (loop
-    for y from 0 below 5
-    do 
-    (loop
-      for x from 0 below 5
-      do (setf (aref arr y x) (* x y)))
-    finally (return arr)))
-
 (defun read-bingo-board (in)
   (loop 
     initially (read-line in nil nil) ; skip empty line
     with board = (make-array '(5 5))
     for y from 0 below 5
     for line = (read-line in nil nil)
+    while line
     for nums-str = (remove-if #'uiop:emptyp (uiop:split-string line))
     for nums = (map 'list #'parse-integer nums-str)
     do
-      (format t "y=~A nums=~A~%" y nums)))
+      (loop
+        for x from 0 below 5
+        for n in nums
+        do (setf (aref board y x) n))
+    finally (when (> y 0) (return board))))
 
 (defun read-bingo-input (filename)
   "Read file into a list of lines."
@@ -197,14 +183,9 @@
     (loop 
       with first-line = (read-line in nil nil)
       with draw-numbers = (map 'list #'parse-integer (uiop:split-string first-line :separator '(#\,)))
-      with board = (read-bingo-board in)
-      while nil)))
-      ; for board = (read-bingo-board in)
-      ; while board
-      ; collect board into boards
-      ; do 
-      ;   (print draw-numbers)
-      ;   (print board)
-      ; finally (return (values draw-numbers boards)))))
+      for board = (read-bingo-board in)
+      while board
+      collect board into boards
+      finally (return (values draw-numbers boards)))))
 
 (read-bingo-input "4-sample.txt")
