@@ -48,11 +48,11 @@
     for (instr num-str) in instructions
     for num = (parse-integer num-str)
     if (equal instr "forward") 
-    summing num into forward
+      summing num into forward
     if (equal instr "down")
-    summing num into down
+      summing num into down
     if (equal instr "up")
-    summing num into up
+      summing num into up
     finally (return (* forward (- down up)))))
 
 (print (2a "2.txt"))
@@ -70,8 +70,8 @@
     for num = (parse-integer num-str)
     if (string= instr "forward")
     do 
-    (incf x num)
-    (incf y (* num aim))
+      (incf x num)
+      (incf y (* num aim))
     if (string= instr "up")
     do (decf aim num)
     if (string= instr "down")
