@@ -236,25 +236,24 @@
 (print (4a "4.txt"))
 
 ;;; 4b
+(defun find-worst-board (filename)
+  (multiple-value-bind (draw-numbers boards) (read-bingo-input filename)
+    (loop
+      for n in draw-numbers
+      do 
+        (loop
+          for board in boards
+          do 
+            (board-mark-number board n)
+            (let ((new-boards (remove-if #'board-complete-p boards)))
+              (if (and 
+                    (= 1 (length boards))
+                    (board-complete-p board))
+                (return-from find-worst-board (values board n))
+                (setf boards new-boards)))))))
 
 (defun 4b (filename)
-  (multiple-value-bind (draw-numbers boards) (read-bingo-input filename)
-    (let* ((i (loop
-               for n in draw-numbers
-               for i from 0
-               do 
-                 (loop
-                   for board in boards
-                   do 
-                     (board-mark-number board n))
-                 (setf boards (remove-if #'board-complete-p boards))
-                 (when (= 1 (length boards))
-                    (return i))))
-           (next-n (elt draw-numbers (incf i)))            
-           (board (first boards)))
-      (print next-n)
-      (print board)
-      (board-mark-number board next-n)
-      (board-score board next-n))))
+  (multiple-value-bind (board n) (find-worst-board filename)
+        (board-score board n)))
 
-(4b "4.txt")
+(print (4b "4.txt"))
