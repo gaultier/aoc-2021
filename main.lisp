@@ -146,7 +146,7 @@
 
 (defun 3b-solve-CO2 (nums &key (pos 0))
   (if (= 1 (length nums))   
-      (bit-vector-to-integer-little-endian (first nums))
+     d(bit-vector-to-integer-little-endiand(first nums))
       (3b-solve-CO2 (nums-with-majority-bit-in-position nums pos 'least-common) :pos (+ 1 pos))))
 
 (3b-solve-O2 (read-lines-from-file-as-bitarray "3-sample.txt"))
@@ -188,6 +188,45 @@
       collect board into boards
       finally (return (values draw-numbers boards)))))
 
+(defun board-complete-p (board)
+  (or (board-some-row-complete-p board) (board-some-column-complete-p board)))
+
+(defun board-some-row-complete-p (board)
+  (loop
+    for y from 0 below 5
+    thereis (loop 
+              for x from 0 below 5
+              for (nil marked) = (aref board y x)
+              always marked)))
+
+(defun board-some-column-complete-p (board)
+  (loop
+    for x from 0 below 5
+    thereis (loop 
+              for y from 0 below 5
+              for (nil marked) = (aref board y x)
+              always marked)))
+
+(defun board-mark-number (board num)
+  (dotimes (y 5)
+    (dotimes (x 5)
+      (format t "~d ~d~%" x y)
+      (when (= num (first (aref board y x)))
+        (setf (aref board y x) (list num t))))))
+
 (defun 4a (filename)
-  (multiple-value-bind ((draw-numbers boards))))
-(read-bingo-input "4-sample.txt")
+  (multiple-value-bind (draw-numbers boards) (read-bingo-input filename)
+    (print draw-numbers)
+    (print boards)
+    (loop
+      for n in draw-numbers
+      do 
+        (loop
+          for board in boards
+          do 
+            (board-mark-number board n)
+            (if (board-complete-p board)
+              (return-from 4a (values board n)))))))
+                
+
+(4a "4-sample.txt")
