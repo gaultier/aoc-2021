@@ -15,7 +15,7 @@
       while line
       collect line)))
 
-; 1a
+;;; 1a
 (defun 1a (filename)
   "Count the times the numbers (one on each line) in the file <filename> increased"
   (loop 
@@ -27,7 +27,7 @@
 
 (print (1a "1.txt"))
 
-; 1b
+;;; 1b
 (defun 1b (filename)
   "Count the times the 3-numbers window in the file <filename> increased"
   (loop 
@@ -39,7 +39,7 @@
 
 (print (1b "1.txt"))
 
-; 2a
+;;; 2a
 (defun 2a (filename)
   "Interpret move instructions for submarine"
   (loop 
@@ -57,7 +57,7 @@
 
 (print (2a "2.txt"))
 
-; 2b
+;;; 2b
 (defun 2b (filename)
   "Interpret move instructions for submarine"
   (loop 
@@ -80,7 +80,7 @@
 
 (print (2b "2.txt"))
 
-; 3a
+;;; 3a
 (defun bit-vector-to-integer-little-endian (bits)
   ""
   (loop
@@ -109,7 +109,7 @@
 
 (print (3a "3.txt"))
 
-; 3b
+;;; 3b
 (defun string->bitarray (s)
   (loop
     with res = (make-array (length s) :element-type 'bit :initial-element 0 :fill-pointer 0)
@@ -157,7 +157,7 @@
 
 (3b "3.txt")
 
-; 4a
+;;; 4a
 (defun read-bingo-board (in)
   (loop 
     initially (read-line in nil nil) ; skip empty line
@@ -234,3 +234,5 @@
               (return-from 4a (board-score board n)))))))
                 
 (print (4a "4.txt"))
+
+;;; 4b
