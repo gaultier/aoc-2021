@@ -210,14 +210,24 @@
 (defun board-mark-number (board num)
   (dotimes (y 5)
     (dotimes (x 5)
-      (format t "~d ~d~%" x y)
       (when (= num (first (aref board y x)))
         (setf (aref board y x) (list num t))))))
 
+(defun board-score (board last-drawn-num)
+  (let ((unmarked-sum (loop
+                        for y from 0 below 5
+                        sum
+                          (loop
+                            for x from 0 below 5
+                            for cell = (aref board y x)
+                            for n = (first cell)
+                            for marked = (second cell)
+                            unless marked
+                            sum n))))
+    (* unmarked-sum last-drawn-num)))
+
 (defun 4a (filename)
   (multiple-value-bind (draw-numbers boards) (read-bingo-input filename)
-    (print draw-numbers)
-    (print boards)
     (loop
       for n in draw-numbers
       do 
@@ -226,7 +236,7 @@
           do 
             (board-mark-number board n)
             (if (board-complete-p board)
-              (return-from 4a (values board n)))))))
+              (return-from 4a (board-score board n)))))))
                 
 
 (4a "4-sample.txt")
