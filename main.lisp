@@ -146,7 +146,7 @@
 
 (defun 3b-solve-CO2 (nums &key (pos 0))
   (if (= 1 (length nums))   
-     d(bit-vector-to-integer-little-endiand(first nums))
+      (bit-vector-to-integer-little-endian (first nums))
       (3b-solve-CO2 (nums-with-majority-bit-in-position nums pos 'least-common) :pos (+ 1 pos))))
 
 (3b-solve-O2 (read-lines-from-file-as-bitarray "3-sample.txt"))
@@ -219,9 +219,7 @@
                         sum
                           (loop
                             for x from 0 below 5
-                            for cell = (aref board y x)
-                            for n = (first cell)
-                            for marked = (second cell)
+                            for (n marked) = (aref board y x)
                             unless marked
                             sum n))))
     (* unmarked-sum last-drawn-num)))
@@ -238,5 +236,4 @@
             (if (board-complete-p board)
               (return-from 4a (board-score board n)))))))
                 
-
-(4a "4-sample.txt")
+(print (4a "4.txt"))
