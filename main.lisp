@@ -175,7 +175,7 @@
     finally (when (> y 0) (return board))))
 
 (defun read-bingo-input (filename)
-  "Read file into a list of lines."
+  "Read file into a list of numbers to draw and a list of boards"
   (with-open-file (in filename)
     (loop 
       with first-line = (read-line in nil nil)
