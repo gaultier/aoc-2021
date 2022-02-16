@@ -110,7 +110,7 @@
 (print (3a "3.txt"))
 
 ; 3b
-(defun string-to-bitarray (s)
+(defun string->bitarray (s)
   (loop
     with res = (make-array (length s) :element-type 'bit :initial-element 0 :fill-pointer 0)
     for c across s
@@ -122,7 +122,7 @@
     finally (return res)))
 
 (defun read-lines-from-file-as-bitarray (filename)
-  (map 'list #'string-to-bitarray (read-file-as-lines filename)))
+  (map 'list #'string->bitarray (read-file-as-lines filename)))
 
 (defun nums-with-majority-bit-in-position (nums pos criteria)
   (loop 
@@ -148,9 +148,6 @@
   (if (= 1 (length nums))   
       (bit-vector-to-integer-little-endian (first nums))
       (3b-solve-CO2 (nums-with-majority-bit-in-position nums pos 'least-common) :pos (+ 1 pos))))
-
-(3b-solve-O2 (read-lines-from-file-as-bitarray "3-sample.txt"))
-(3b-solve-CO2 (read-lines-from-file-as-bitarray "3-sample.txt"))
 
 (defun 3b (filename)
   (let* ((lines (read-lines-from-file-as-bitarray filename))
