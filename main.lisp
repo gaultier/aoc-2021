@@ -257,3 +257,6 @@
         (board-score board n)))
 
 (print (4b "4.txt"))
+
+
+;;; 5a
