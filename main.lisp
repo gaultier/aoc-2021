@@ -185,24 +185,24 @@
       collect board into boards
       finally (return (values draw-numbers boards)))))
 
-(defun board-complete-p (board)
-  (or (board-some-row-complete-p board) (board-some-column-complete-p board)))
+(defun board-some-column-complete-p (board)
+  (loop
+    for x from 0 below 5
+    thereis (loop
+              for y from 0 below 5
+              for (nil marked) = (aref board y x)
+              always marked)))
 
 (defun board-some-row-complete-p (board)
   (loop
     for y from 0 below 5
-    thereis (loop 
+    thereis (loop
               for x from 0 below 5
               for (nil marked) = (aref board y x)
               always marked)))
 
-(defun board-some-column-complete-p (board)
-  (loop
-    for x from 0 below 5
-    thereis (loop 
-              for y from 0 below 5
-              for (nil marked) = (aref board y x)
-              always marked)))
+(defun board-complete-p (board)
+  (or (board-some-row-complete-p board) (board-some-column-complete-p board)))
 
 (defun board-mark-number (board num)
   (dotimes (y 5)
