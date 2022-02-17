@@ -1,3 +1,4 @@
 *.fasl
 *.txt
 !*-sample.txt
+aoc2021

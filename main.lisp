@@ -1,7 +1,8 @@
 (in-package #:cl-user)
 
 (defpackage #:aoc2021
-  (:use #:cl))
+  (:use #:cl)
+  (:export :main))
 
 (in-package #:aoc2021)
 
@@ -256,7 +257,18 @@
   (multiple-value-bind (board n) (find-worst-board filename)
         (board-score board n)))
 
-(print (4b "4.txt"))
-
 
 ;;; 5a
+
+
+(defun main ()
+  (print (1a "1.txt"))
+  (print (1b "1.txt"))
+  (print (2a "2.txt"))
+  (print (2b "2.txt"))
+  (print (3a "3.txt"))
+  (print (3b "3.txt"))
+  (print (4a "4.txt"))
+  (print (4b "4.txt")))
+
+(main)
