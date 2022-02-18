@@ -3,4 +3,3 @@ aoc2021:
 
 run:
 	sbcl --script main.lisp
-

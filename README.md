@@ -20,6 +20,6 @@
 ```sh
 $ make run
 
-# Or: 
+# Or:
 $ make && ./aoc2021
 ```
