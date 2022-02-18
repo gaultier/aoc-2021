@@ -290,9 +290,7 @@
          (y1 (second m))
          (x2 (first n))
          (y2 (second n))
-         (a (if (= 0 (- x2 x1))
-                0
-                (/ (- y2 y1) (- x2 x1))))
+         (a (/ (- y2 y1) (- x2 x1)))
          (b (- y1 (* a x1))))
     (values a b)))
 
@@ -300,14 +298,17 @@
  (loop
     with grid = (make-hash-table :test #'equal)
     for ((x1 y1) (x2 y2)) in points
-    do
+    if (= x1 x2) do
+      (loop
+            for y from (min y1 y2) to (max y1 y2)
+            do (incr-kv (list x1 y) grid))
+    else do
       (multiple-value-bind (a b) (compute-line-equation-from-points (list x1 y1) (list x2 y2))
         (loop
           for x from (min x1 x2) to (max x1 x2)
-          for y from (min y1 y2) to (max y1 y2)
-          for yy = (+ (* a x) b)
-          when (= y yy)
-          do (incr-kv (list x y) grid)))
+          for y = (+ (* a x) b)
+          do
+            (incr-kv (list x y) grid)))
     finally (return grid)))
 
 (defun 5b (filename)
@@ -316,11 +317,9 @@
          (grid (fill-grid points)))
     (loop
           for v being the hash-values in grid
-          do (print v))))
-          ;; when (> v 1)
-          ;; count 1)))
+          when (> v 1)
+          count 1)))
 
-(5b "5-sample.txt")
 
 ;;; entrypoint
 (defun main ()
@@ -332,6 +331,8 @@
   (print (3b "3.txt"))
   (print (4a "4.txt"))
   (print (4b "4.txt"))
-  (print (5a "5.txt")))
+  (print (5a "5.txt"))
+  (print (5b "5.txt")))
+
 
 (main)
