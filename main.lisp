@@ -285,8 +285,6 @@
           count 1)))
 
 (5a "5.txt")
- ; => 6461 (13 bits, #x193D)
-
 
 ;;; entrypoint
 (defun main ()
