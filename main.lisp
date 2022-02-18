@@ -320,6 +320,25 @@
           when (> v 1)
           count 1)))
 
+;;; 6a
+(defun lanternfish-tick (school)
+  (let ((new-school '()))
+    (dolist (fish school new-school)
+          (if (= fish 0)
+              (progn
+                (push 6 new-school)
+                (push 8 new-school))
+              (push (decf fish) new-school)))
+    (reverse new-school)))
+
+
+(defun 6a (filename)
+  (let* ((input (with-open-file (in filename)
+                  (uiop:split-string (read-line in) :separator '(#\,))))
+         (school (map 'list #'parse-integer input)))
+    (dotimes (i 80)
+      (setf school (lanternfish-tick school)))
+    (length school)))
 
 ;;; entrypoint
 (defun main ()
@@ -332,7 +351,7 @@
   (print (4a "4.txt"))
   (print (4b "4.txt"))
   (print (5a "5.txt"))
-  (print (5b "5.txt")))
-
+  (print (5b "5.txt"))
+  (print (6a "6.txt")))
 
 (main)
