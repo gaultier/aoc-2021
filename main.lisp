@@ -26,8 +26,6 @@
     counting (> b a) into increase-count
     finally (return increase-count)))
 
-(print (1a "1.txt"))
-
 ;;; 1b
 (defun 1b (filename)
   "Count the times the 3-numbers window in the file <filename> increased"
@@ -37,8 +35,6 @@
     for (a b c d) on numbers while (and b c d)
     counting (< (+ a b c) (+ b c d)) into increase-count
     finally (return increase-count)))
-
-(print (1b "1.txt"))
 
 ;;; 2a
 (defun 2a (filename)
@@ -55,8 +51,6 @@
     if (equal instr "up")
       summing num into up
     finally (return (* forward (- down up)))))
-
-(print (2a "2.txt"))
 
 ;;; 2b
 (defun 2b (filename)
@@ -78,8 +72,6 @@
     if (string= instr "down")
     do (incf aim num)
     finally (return (* x y))))
-
-(print (2b "2.txt"))
 
 ;;; 3a
 (defun bit-vector-to-integer-little-endian (bits)
@@ -107,8 +99,6 @@
     finally (let ((gamma-num (bit-vector-to-integer-little-endian gamma))
                   (epsilon-num (bit-vector-to-integer-little-endian epsilon)))
               (return (* gamma-num epsilon-num)))))
-
-(print (3a "3.txt"))
 
 ;;; 3b
 (defun string->bitarray (s)
@@ -234,8 +224,6 @@
             (if (board-complete-p board)
               (return-from 4a (board-score board n)))))))
                 
-(print (4a "4.txt"))
-
 ;;; 4b
 (defun find-worst-board (filename)
   (multiple-value-bind (draw-numbers boards) (read-bingo-input filename)

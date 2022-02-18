@@ -2,11 +2,9 @@
 
 ## Setup
 
-*Prerequisites: sbcl & quicklisp*
+*Prerequisites: sbcl & quicklisp e.g. `brew install sbcl`*
 
-```
-# In vim
-
+```vim
 # Start the server
 \rr 
 
@@ -20,5 +18,8 @@
 ## Run
 
 ```sh
-$ sbcl --script main.lisp
+$ make run
+
+# Or: 
+$ make && ./aoc2021
 ```
