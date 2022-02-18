@@ -247,7 +247,6 @@
 
 
 ;;; 5a
-
 (defun parse-line-points (s)
   (let* ((parts (uiop:split-string s :separator '(#\, #\- #\>)))
          (x1 (parse-integer (first parts)))
@@ -256,34 +255,37 @@
          (y2 (parse-integer (fifth parts))))
     (list (list x1 y1) (list x2 y2))))
 
-(defun fill-grid (points)
+(defun incr-kv (key hash-table)
+  (multiple-value-bind (value present) (gethash key hash-table)
+    (if present
+        (setf (gethash key hash-table) (+ 1 value))
+        (setf (gethash key hash-table) 1))))
+
+(defun fill-grid-straight (points)
  (loop
     with grid = (make-hash-table :test #'equal)
     for ((x1 y1) (x2 y2)) in points
-    when (or (= x1 x2) (= y1 y2))
-    do
-      (let ((start (if (= x1 x2) (min y1 y2) (min x1 x2)))
-            (end (if (= x1 x2) (max y1 y2) (max x1 x2))))
+    when (= y1 y2) do
         (loop
-          for coord from start to end
-          for xy = (if (= x1 x2) (list x1 coord) (list coord y1))
-          do
-            (multiple-value-bind (value present) (gethash xy grid)
-              (if present
-                  (setf (gethash xy grid) (+ 1 value))
-                  (setf (gethash xy grid) 1)))))
+          for x from (min x1 x2) to (max x1 x2)
+          do (incr-kv (list x y1) grid))
+    when (= x1 x2) do
+        (loop
+          for y from (min y1 y2) to (max y1 y2)
+          do (incr-kv (list x1 y) grid))
     finally (return grid)))
 
 (defun 5a (filename)
   (let* ((lines (read-file-as-lines filename))
          (points (map 'list #'parse-line-points lines))
-         (grid (fill-grid points)))
+         (grid (fill-grid-straight points)))
     (loop
           for v being the hash-values in grid
           when (> v 1)
           count 1)))
 
 (5a "5.txt")
+ ; => 6461 (13 bits, #x193D)
 
 
 ;;; entrypoint
