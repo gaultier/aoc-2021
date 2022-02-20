@@ -340,6 +340,34 @@
       (setf school (lanternfish-tick school)))
     (length school)))
 
+;;; 6b
+
+
+(defun lanternfish-tick-vec (school)
+  (loop
+    for fish across school
+    for i from 0
+    do
+       (if (= fish 0)
+           (progn
+             (setf (aref school i) 6)
+             (vector-push-extend 8 school))
+           (setf (aref school i) (decf fish)))))
+
+(defun 6b (filename)
+  (declare (optimize (speed 3) (safety 0) (debug 0)))
+  (let* ((input (with-open-file (in filename)
+                  (uiop:split-string (read-line in) :separator '(#\,))))
+         (school (make-array 0 :element-type 'unsigned-byte :adjustable t :fill-pointer t)))
+        (loop
+          for n in input do
+          (vector-push-extend (parse-integer n) school))
+        (dotimes (i 256)
+          (lanternfish-tick-vec school))
+        (length school)))
+
+(6b "6-sample.txt")
+
 ;;; entrypoint
 (defun main ()
   (print (1a "1.txt"))
@@ -353,5 +381,4 @@
   (print (5a "5.txt"))
   (print (5b "5.txt"))
   (print (6a "6.txt")))
-
-(main)
+  ;; (print (6b "6.txt")))
