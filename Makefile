@@ -6,4 +6,4 @@ aoc2021: main.lisp
 build: aoc2021
 
 run:
-	sbcl --script main.lisp
+	sbcl --script main.lisp --dynamic-space-size 10024

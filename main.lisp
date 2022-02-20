@@ -2,7 +2,19 @@
 
 (defpackage #:aoc2021
   (:use #:cl)
-  (:export :main))
+  (:export :main)
+  (:export :1a)
+  (:export :1b)
+  (:export :2a)
+  (:export :2b)
+  (:export :3a)
+  (:export :3b)
+  (:export :4a)
+  (:export :4b)
+  (:export :5a)
+  (:export :5b)
+  (:export :6a)
+  (:export :6b))
 
 (in-package #:aoc2021)
 
@@ -329,7 +341,7 @@
                 (push 6 new-school)
                 (push 8 new-school))
               (push (decf fish) new-school)))
-    (reverse new-school)))
+    new-school))
 
 
 (defun 6a (filename)
@@ -340,33 +352,33 @@
       (setf school (lanternfish-tick school)))
     (length school)))
 
+(defparameter *arr* (make-array 9))
+(incf (aref *arr* 1))
+
+
+
 ;;; 6b
-
-
 (defun lanternfish-tick-vec (school)
-  (loop
-    for fish across school
-    for i from 0
-    do
-       (if (= fish 0)
-           (progn
-             (setf (aref school i) 6)
-             (vector-push-extend 8 school))
-           (setf (aref school i) (decf fish)))))
+  (let ((zeroes (aref school 0)))
+    (loop
+      for i from 0 to 7
+      do
+        (setf (aref school i) (aref school (+ 1 i))))
+    (incf (aref school 6) zeroes)
+    (setf (aref school 8) zeroes)
+    school))
 
 (defun 6b (filename)
-  (declare (optimize (speed 3) (safety 0) (debug 0)))
+  ;; (declare (optimize (speed 3) (safety 0) (debug 0)))
   (let* ((input (with-open-file (in filename)
                   (uiop:split-string (read-line in) :separator '(#\,))))
-         (school (make-array 0 :element-type 'unsigned-byte :adjustable t :fill-pointer t)))
+         (school (make-array 9 :element-type 'fixnum)))
         (loop
           for n in input do
-          (vector-push-extend (parse-integer n) school))
+          (incf (aref school (parse-integer n))))
         (dotimes (i 256)
           (lanternfish-tick-vec school))
-        (length school)))
-
-(6b "6-sample.txt")
+        (reduce '+ school)))
 
 ;;; entrypoint
 (defun main ()
@@ -380,5 +392,5 @@
   (print (4b "4.txt"))
   (print (5a "5.txt"))
   (print (5b "5.txt"))
-  (print (6a "6.txt")))
-  ;; (print (6b "6.txt")))
+  (print (6a "6.txt"))
+  (print (6b "6.txt")))
