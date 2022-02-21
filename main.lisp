@@ -420,6 +420,8 @@
 
 ;;; entrypoint
 (defun main ()
+  (with-open-file (in "does-not-exist")
+    (read-char in))
   (print (1a "1.txt"))
   (print (1b "1.txt"))
   (print (2a "2.txt"))
