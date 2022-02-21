@@ -394,6 +394,29 @@
     (setf min-point i)
     finally (return (values min min-point))))
 
+;;; 7b
+
+(defun sum-range-inc (a b)
+  (let ((n (abs (- b a))))
+    (/ (* n (+ n 1)) 2)))
+
+(defun 7b (filename)
+  (loop
+    with input = (with-open-file (in filename)
+                  (read-line in))
+    with nums = (sort (map 'list #'parse-integer (uiop:split-string input :separator '(#\,)))
+                      '<)
+    with start = (first nums)
+    with end = (first (last nums))
+    with min = 1e12 ; HACK
+    with min-point = nil
+    for i from start to end
+    for dist = (loop for n in nums sum (sum-range-inc n i))
+    when (> min dist)
+    do
+    (setf min dist)
+    (setf min-point i)
+    finally (return (values min min-point))))
 
 ;;; entrypoint
 (defun main ()
@@ -409,4 +432,5 @@
   (print (5b "5.txt"))
   (print (6a "6.txt"))
   (print (6b "6.txt"))
-  (print (7a "7.txt")))
+  (print (7a "7.txt"))
+  (print (7b "7.txt")))
