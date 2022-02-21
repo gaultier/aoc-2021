@@ -352,10 +352,6 @@
       (setf school (lanternfish-tick school)))
     (length school)))
 
-(defparameter *arr* (make-array 9))
-(incf (aref *arr* 1))
-
-
 
 ;;; 6b
 (defun lanternfish-tick-vec (school)
@@ -369,7 +365,6 @@
     school))
 
 (defun 6b (filename)
-  ;; (declare (optimize (speed 3) (safety 0) (debug 0)))
   (let* ((input (with-open-file (in filename)
                   (uiop:split-string (read-line in) :separator '(#\,))))
          (school (make-array 9 :element-type 'fixnum)))
@@ -379,6 +374,9 @@
         (dotimes (i 256)
           (lanternfish-tick-vec school))
         (reduce '+ school)))
+
+;;; 7a
+(defun 7a (filename))
 
 ;;; entrypoint
 (defun main ()
